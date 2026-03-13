@@ -1,65 +1,95 @@
-import Image from "next/image";
+import Link from 'next/link';
+import Image from 'next/image';
 
-export default function Home() {
+export default function LandingPage() {
   return (
-    <div className="flex min-h-screen items-center justify-center bg-zinc-50 font-sans dark:bg-black">
-      <main className="flex min-h-screen w-full max-w-3xl flex-col items-center justify-between py-32 px-16 bg-white dark:bg-black sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={100}
-          height={20}
-          priority
-        />
-        <div className="flex flex-col items-center gap-6 text-center sm:items-start sm:text-left">
-          <h1 className="max-w-xs text-3xl font-semibold leading-10 tracking-tight text-black dark:text-zinc-50">
-            To get started, edit the page.tsx file.
-          </h1>
-          <p className="max-w-md text-lg leading-8 text-zinc-600 dark:text-zinc-400">
-            Looking for a starting point or more instructions? Head over to{" "}
-            <a
-              href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Templates
-            </a>{" "}
-            or the{" "}
-            <a
-              href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-              className="font-medium text-zinc-950 dark:text-zinc-50"
-            >
-              Learning
-            </a>{" "}
-            center.
+    <main className="relative flex flex-col md:flex-row min-h-screen w-full bg-slate-50 overflow-hidden">
+
+      {/* LOGO SUPERIOR (Identidad de Marca) */}
+      <div className="top-[-30] left-[90] opacity-70 absolute md:top-8 left-1/2 -translate-x-1/2 z-40 w-full flex justify-center p-4 md:top-12">
+        <div>
+          <Image
+            src="/logos/logo-grupo-bg.webp"
+            alt="MS Grupo Inmobiliario"
+            width={180}
+            height={80}
+            priority
+            className="object-contain"
+          />
+        </div>
+      </div>
+
+      {/* SECCIÓN INMOBILIARIA */}
+      <section className="h-1/2 md:flex-1 md:h-dvh relative group overflow-hidden border-b md:border-b-0 md:border-r border-gray-200">
+        <div className="absolute inset-0 z-0 transition-transform duration-[3000ms] group-hover:scale-110">
+          <Image
+            src="/images/bg-inmobiliaria-business.webp"
+            alt="Background Inmobiliaria"
+            fill
+            className="object-cover grayscale md:grayscale-0"
+          />
+          {/* Base más sólida para que no sea pálido, en hover pasa a Azul Completo */}
+          <div className="absolute inset-0 bg-[#003153]/60 md:bg-[#737373]/40 group-hover:bg-[#003153]/75 transition-all duration-700" />
+        </div>
+
+        <Link href="/inmobiliaria" className="relative z-10 flex flex-col items-center justify-center h-full w-full p-8 pt-32 md:pt-8 text-center">
+          {/* Logo con efecto de escala en hover */}
+          <div className="mb-6 transition-all group-hover:bg-[#003153] group-hover:p-1/8 group-hover:shadow-lg  rounded-full duration-500 scale-110" >
+            <Image src="/logos/logo-propiedades.webp" alt="MS Propiedades" width={160} height={80} />
+          </div>
+
+          <h2 className="text-4xl md:text-4xl text-white font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
+            Inmobiliaria
+          </h2>
+          <p className="pt-4 max-w-xs text-sm md:text-base text-white font-medium leading-relaxed transition-colors duration-500">
+            Especialistas en mercado industrial y residencial.
           </p>
+          {/*  Indicador de botón en Mobile */}
+          <div className="md:hidden mt-4 flex items-center  bg-white p-1  rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-pulse">
+            Toca para ingresar
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          <div className="mt-8 h-[1px] w-16 bg-white md:bg-[#003153] group-hover:bg-white transition-all duration-500 group-hover:w-40" />
+        </Link>
+      </section>
+
+      {/* SECCIÓN CONSTRUCCIÓN */}
+      <section className="h-1/2 md:flex-1 md:h-dvh relative group overflow-hidden ">
+        <div className="absolute inset-0 z-0 transition-transform duration-[3000ms] group-hover:scale-110">
+          <Image
+            src="/images/bg-constructora.webp"
+            alt="Background Constructora"
+            fill
+            className="object-cover"
+          />
+          {/* Base más sólida para que no sea pálido, en hover pasa a Azul Completo */}
+          <div className="absolute inset-0 bg-[#003153]/60 md:bg-[#737373]/40 group-hover:bg-[#003153]/75 transition-all duration-700" />
         </div>
-        <div className="flex flex-col gap-4 text-base font-medium sm:flex-row">
-          <a
-            className="flex h-12 w-full items-center justify-center gap-2 rounded-full bg-foreground px-5 text-background transition-colors hover:bg-[#383838] dark:hover:bg-[#ccc] md:w-[158px]"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={16}
-              height={16}
-            />
-            Deploy Now
-          </a>
-          <a
-            className="flex h-12 w-full items-center justify-center rounded-full border border-solid border-black/[.08] px-5 transition-colors hover:border-transparent hover:bg-black/[.04] dark:border-white/[.145] dark:hover:bg-[#1a1a1a] md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Documentation
-          </a>
-        </div>
-      </main>
-    </div>
+
+        <Link href="/constructora" className="relative z-10 flex flex-col items-center justify-center h-full w-full p-8 pt-24 md:pt-8 text-center">
+          <div className="mb-6 scale-110 group-hover:bg-white/30 group-hover:p-1/8 group-hover:shadow-lg  rounded-full transition-all duration-500">
+            <Image src="/logos/logo-constructora.webp" alt="MS Constructora" width={160} height={80} />
+          </div>
+
+          <h2 className="text-4xl md:text-4xl text-white font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
+            Construcción
+          </h2>
+          <p className="pt-4 max-w-xs text-sm md:text-base text-white font-medium leading-relaxed transition-colors duration-500">
+            Diseño, proyectos y ejecución de obras personalizadas.
+          </p>
+          {/*  Indicador de botón en Mobile */}
+          <div className="md:hidden mt-4 flex items-center bg-white p-1  rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-pulse">
+            Toca para ingresar
+            <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
+            </svg>
+          </div>
+          <div className="mt-8 h-[1px] w-16 bg-white md:bg-[#003153] group-hover:bg-white transition-all duration-500 group-hover:w-40" />
+          </Link>
+      </section>
+
+    </main>
   );
 }
