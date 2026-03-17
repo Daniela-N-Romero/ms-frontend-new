@@ -6,7 +6,7 @@ export default function LandingPage() {
     <main className="relative flex flex-col md:flex-row min-h-screen w-full bg-slate-50 overflow-hidden">
 
       {/* LOGO SUPERIOR (Identidad de Marca) */}
-      <div className="top-[-30] left-[90] opacity-70 absolute md:top-8 left-1/2 -translate-x-1/2 z-40 w-full flex justify-center p-4 md:top-12">
+      <div className="left-[90] opacity-80 absolute md:left-1/2 -translate-x-1/2 z-40 w-full flex justify-center p-4 md:top-12">
         <div>
           <Image
             src="/logos/logo-grupo-bg.webp"
@@ -21,9 +21,9 @@ export default function LandingPage() {
 
       {/* SECCIÓN INMOBILIARIA */}
       <section className="h-1/2 md:flex-1 md:h-dvh relative group overflow-hidden border-b md:border-b-0 md:border-r border-gray-200">
-        <div className="absolute inset-0 z-0 transition-transform duration-[3000ms] group-hover:scale-110">
+        <div className="absolute inset-0 z-0 shadow-xl/100 transition-transform duration-[3000ms] group-hover:scale-110">
           <Image
-            src="/images/bg-inmobiliaria-business.webp"
+            src="/images/bg-inmobiliaria.webp"
             alt="Background Inmobiliaria"
             fill
             className="object-cover grayscale md:grayscale-0"
@@ -35,17 +35,17 @@ export default function LandingPage() {
         <Link href="/inmobiliaria" className="relative z-10 flex flex-col items-center justify-center h-full w-full p-8 pt-32 md:pt-8 text-center">
           {/* Logo con efecto de escala en hover */}
           <div className="mb-6 transition-all group-hover:bg-[#003153] group-hover:p-1/8 group-hover:shadow-lg  rounded-full duration-500 scale-110" >
-            <Image src="/logos/logo-propiedades.webp" alt="MS Propiedades" width={160} height={80} />
+            <Image src="/logos/logo-propiedades-shadow.webp" alt="MS Propiedades" width={160} height={80} />
           </div>
 
-          <h2 className="text-4xl md:text-4xl text-white font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
+          <h2 className="text-4xl md:text-4xl text-white text-shadow-lg/50 text-shadow-lg/50 font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
             Inmobiliaria
           </h2>
           <p className="pt-4 max-w-xs text-sm md:text-base text-white font-medium leading-relaxed transition-colors duration-500">
             Especialistas en mercado industrial y residencial.
           </p>
           {/*  Indicador de botón en Mobile */}
-          <div className="md:hidden mt-4 flex items-center  bg-white p-1  rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-pulse">
+          <div className="md:hidden mt-4 flex items-center  bg-white p-1  rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-bounce-x">
             Toca para ingresar
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
@@ -70,17 +70,17 @@ export default function LandingPage() {
 
         <Link href="/constructora" className="relative z-10 flex flex-col items-center justify-center h-full w-full p-8 pt-24 md:pt-8 text-center">
           <div className="mb-6 scale-110 group-hover:bg-white/30 group-hover:p-1/8 group-hover:shadow-lg  rounded-full transition-all duration-500">
-            <Image src="/logos/logo-constructora.webp" alt="MS Constructora" width={160} height={80} />
+            <Image src="/logos/logo-constructora-white.webp" alt="MS Constructora" width={160} height={80} />
           </div>
 
-          <h2 className="text-4xl md:text-4xl text-white font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
+          <h2 className="text-4xl md:text-4xl text-white text-shadow-lg/50 font-medium tracking-tighter group-hover:text-white transition-colors duration-500">
             Construcción
           </h2>
-          <p className="pt-4 max-w-xs text-sm md:text-base text-white font-medium leading-relaxed transition-colors duration-500">
+          <p className="pt-4 max-w-xs text-sm md:text-base text-white text-shadow-lg/50 font-medium leading-relaxed transition-colors duration-500">
             Diseño, proyectos y ejecución de obras personalizadas.
           </p>
-          {/*  Indicador de botón en Mobile */}
-          <div className="md:hidden mt-4 flex items-center bg-white p-1  rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-pulse">
+          {/* Indicador de botón en Mobile */}
+          <div className="md:hidden mt-4 flex items-center bg-white p-1 rounded-sm text-[#003153]/80 text-xs uppercase tracking-widest animate-bounce-x">
             Toca para ingresar
             <svg className="w-4 h-4 ml-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />

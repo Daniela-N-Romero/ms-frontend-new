@@ -1,7 +1,23 @@
 @import "tailwindcss";
 
+
 @theme {
   --color-ms-azul: #003153;
+
+  /* 1. Definimos los keyframes (los pasos de la animación) */
+  @keyframes bounce-x {
+    0%, 100% {
+      transform: translateX(-3%);
+      animation-timing-function: cubic-bezier(0.8, 0, 1, 1);
+    }
+    50% {
+      transform: translateX(3%);
+      animation-timing-function: cubic-bezier(0, 0, 0.2, 1);
+    }
+  }
+
+  /* 2. Creamos la clase de animación vinculada a esos keyframes */
+  --animate-bounce-x: bounce-x 1.5s infinite;
 }
 
 html {
