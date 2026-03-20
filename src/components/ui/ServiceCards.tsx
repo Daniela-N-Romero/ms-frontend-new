@@ -14,11 +14,11 @@ interface ServiceCardProps {
 export function ServiceCard({ href, bgImage, logo, title, description, isInmo }: ServiceCardProps) {
   return (
     
- <section className="h-1/2 md:flex-1 md:h-dvh relative group overflow-hidden border-b md:border-b-0 md:border-r border-gray-200">
+ <section className="h-1/2 flex-1 md:h-dvh relative group overflow-hidden border-b md:border-b-0 md:border-r border-gray-200">
         <div className="absolute inset-0 z-0 shadow-xl/100 transition-transform duration-[3000ms] group-hover:scale-110">
           <Image
             src= {bgImage}
-            alt= {`Background ${title}`}
+            alt= {`MS Grupo - Sección ${title}`}
             fill
             className="object-cover grayscale md:grayscale-0"
           />
