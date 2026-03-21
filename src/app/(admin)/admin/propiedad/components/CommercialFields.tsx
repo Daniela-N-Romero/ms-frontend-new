@@ -1,10 +1,13 @@
+import { AgeFields } from "./AgeFields";
+
 
 interface Props {
   register: any;
-  watch: any;
+  watch: any; 
+  control: any;
 }
 
-export default function CommercialFields({ register, watch }: Props) {
+export default function CommercialFields({ register, watch, control }: Props) {
   const isNewValue = watch('commercial.isNew');
 
   return (
@@ -18,21 +21,8 @@ export default function CommercialFields({ register, watch }: Props) {
           <label className="text-xs font-bold text-slate-400 uppercase">Baños</label>
           <input type="number" {...register('commercial.bathrooms')} className="admin-input" />
         </div>
-        {/* Agregamos antigüedad/a estrenar */}
-        <div>
-            <label className="text-xs font-bold text-slate-400 uppercase">¿A estrenar?</label>
-            <select {...register('commercial.isNew')} className="admin-input">
-                <option value="">Seleccionar</option>
-                <option value="true">Sí</option>
-                <option value="false">No</option>
-            </select>
-           {isNewValue === "false" && (
-            <div className="mt-2 animate-in fade-in zoom-in duration-300">
-              <label className="text-xs font-bold text-slate-400 uppercase">Antigüedad (años)</label>
-              <input type="number" {...register('commercial.age')} className="admin-input" />
-            </div>
-          )}
-        </div>
+        <AgeFields register={register} watch={watch} control={control} propertyType="commercial" />
+
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">

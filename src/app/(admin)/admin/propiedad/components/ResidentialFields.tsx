@@ -1,10 +1,6 @@
-interface Props {
-  register: any;
-  watch: any;
-}
+import { AgeFields } from './AgeFields';
 
-export default function ResidentialFields({ register, watch }: Props) {
-const isNewValue = watch('residential.isNew');
+export default function ResidentialFields({ register, watch, control }: any) {
 
   return (
     <div className="space-y-6">
@@ -17,21 +13,9 @@ const isNewValue = watch('residential.isNew');
           <label className="text-xs font-bold text-slate-400 uppercase">Baños</label>
           <input type="number" {...register('residential.bathrooms')} className="admin-input" />
         </div>
-        {/* Agregamos antigüedad/a estrenar */}
-        <div>
-            <label className="text-xs font-bold text-slate-400 uppercase">¿A estrenar?</label>
-            <select {...register('residential.isNew')} className="admin-input">
-                <option value="">Seleccionar</option>
-                <option value="true">Sí</option>
-                <option value="false">No</option>
-            </select>
-           {isNewValue === "false" && (
-            <div className="mt-2 animate-in fade-in zoom-in duration-300">
-              <label className="text-xs font-bold text-slate-400 uppercase">Antigüedad (años)</label>
-              <input type="number" {...register('residential.age')} className="admin-input" />
-            </div>
-          )}
-        </div>
+
+        <AgeFields register={register} watch={watch} control={control} propertyType="residential"
+        />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">

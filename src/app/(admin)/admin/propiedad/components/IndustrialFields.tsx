@@ -1,9 +1,12 @@
+import { AgeFields } from "./AgeFields";
+
 interface Props {
     register: any;
     watch: any;    
+    control: any;
 }
 
-export default function IndustrialFields({ register, watch }: Props) {
+export default function IndustrialFields({ register, watch, control }: Props) {
     const isNewValue = watch('industrial.isNew');
 
   return (
@@ -30,21 +33,7 @@ export default function IndustrialFields({ register, watch }: Props) {
             <option value="Cat. III">Cat. III</option>
           </select>
         </div>
-        {/* Agregamos antigüedad/a estrenar */}
-        <div>
-            <label className="text-xs font-bold text-slate-400 uppercase">¿A estrenar?</label>
-            <select {...register('industrial.isNew')} className="admin-input">
-                <option value="">Seleccionar</option>
-                <option value="true">Sí</option>
-                <option value="false">No</option>
-            </select>
-           {isNewValue === "false" && (
-            <div className="mt-2 animate-in fade-in zoom-in duration-300">
-              <label className="text-xs font-bold text-slate-400 uppercase">Antigüedad (años)</label>
-              <input type="number" {...register('industrial.age')} className="admin-input" />
-            </div>
-          )}
-        </div>
+        <AgeFields register={register} watch={watch} control={control} propertyType="industrial" />
       </div>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-3">
