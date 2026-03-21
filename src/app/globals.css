@@ -20,6 +20,16 @@
   --animate-bounce-x: bounce-x 1.5s infinite;
 }
 
+@layer components {
+  .admin-label {
+    @apply block text-[10px] font-black text-slate-400 uppercase mb-2 tracking-wider;
+  }
+  
+  .admin-input {
+    @apply w-full p-4 bg-slate-50 rounded-2xl border border-transparent focus:border-blue-500 focus:bg-white focus:ring-4 focus:ring-blue-500/10 transition-all outline-none text-slate-700 font-medium;
+  }
+}
+
 html {
   scroll-behavior: smooth;
 }

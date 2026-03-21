@@ -1,9 +1,7 @@
 import Image from 'next/image';
 import PropertySearch from '@/components/inmobiliaria/PropertySearch';
-import { Factory, Home, LandPlot } from 'lucide-react';
-import { CategoryCard } from '@/components/ui/CategoryCard';
 import { ShortcutsInmo } from '@/components/inmobiliaria/ShortcutsInmo';
-import { PropertyCard } from '@/components/inmobiliaria/PropertyCard';
+//import { PropertyCard } from '@/components/inmobiliaria/PropertyCard';
 
 export default function InmobiliariaPage() {
   return (
@@ -58,10 +56,7 @@ export default function InmobiliariaPage() {
 
           {/* Aquí iría tu componente de PropertyCard mapeando los datos de tu Backend */}
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <PropertyCard />
-            <PropertyCard />
-            <PropertyCard />
-            <PropertyCard />
+
           </div>
 
         </div>
