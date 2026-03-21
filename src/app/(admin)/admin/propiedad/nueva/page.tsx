@@ -5,6 +5,7 @@ import ResidentialFields from '../components/ResidentialFields';
 import CommercialFields from '../components/CommercialFields';
 import IndustrialFields from '../components/IndustrialFields';
 import LandFields from '../components/LandFields';
+import ImageUploader from '@/app/inmobiliaria/propiedad/[slug]/components/ImageUploader';
 
 const LocationPicker = dynamic(
   () => import('../components/LocationPicker'),
@@ -19,21 +20,39 @@ const SUBTYPES = {
 };
 
 export default function PropertyFormPage() {
-  const { register, watch, handleSubmit, setValue, control} = useForm({
+  const { register, watch, handleSubmit, setValue, control } = useForm({
     defaultValues: {
+      category: '',
       name: '',
-      type: '' as keyof typeof SUBTYPES | '',
-      subtype: '',
-      price: '',
       address: '',
       locality: '',
       latitude: '',
       longitude: '',
       totalSurface: '',
       coveredSurface: '',
-      residential: { isNew: '', age: '', rooms: '', bathrooms: '' },
-      commercial: { isNew: '', age: '' },
-      industrial: { isNew: '', age: '' },
+      description: '',
+      type: '' as keyof typeof SUBTYPES | '',
+      subtype: '',
+      currency: 'USD',
+      price: '',
+      residential: { isNew: '', age: '', rooms: '', bathrooms: '', hasPool: false, hasGrill: false, hasGarden: false, hasAC: false, hasGarage: false, hasLaundry: false, hasDressingRoom: false, hasGym: false, isFurnished: false, hasNaturalGas: false },
+      commercial: { isNew: '', age: '', rooms: '', bathrooms: '', hasAC: false, hasParking: false, hasRollingShutter: false, hasKitchen: false, hasFireProtection: false },
+      industrial: { isNew: '', age: '', height: '', offices: '', bathrooms: '', hasParking: false, hasFullSoul: false, hasThreePhasePower: false, hasIndustrialGas: false, hasFireNetwork: false, isInsidePark: false, zonification: '' },
+      land: { frontMeters: '', backMeters: '', hasWaterLine: false, hasGasLine: false, hasSewerLine: false, hasElectricity: false, isFenced: false, isGatedNeighborhood: false },
+      images: [],
+      slug: '',
+      videoUrl: '',
+      pdfUrl: '',
+      isPublished: 'false',
+      colleagueId: '',
+      colleague: { fullName: '', agencyName: '', phoneNumber: '', email: '' },
+      ownerId: '',
+      owner: { fullName: '', phoneNumber: '', email: '' },
+      propertySource: 'ms_propia',
+      agentId: '',
+      agent: { fullName: '', phoneNumber: '', email: '' },
+      privateNotes: '',
+      internalDocsUrls: []
     }
   });
 
@@ -41,7 +60,24 @@ export default function PropertyFormPage() {
   const propertyType = watch('type');
   const propertySubtype = watch('subtype');
   const priceValue = watch('price');
-
+  const videoUrl = watch('videoUrl');
+  
+  // Función para convertir un enlace de YouTube en un enlace de embed seguro y compatible con iframes
+  const getYouTubeEmbedUrl = (url: string) => {
+    if (!url) return null;
+    
+    const regExp = /^.*(youtu.be\/|v\/|u\/\w\/|embed\/|watch\?v=|&v=)([^#&?]*).*/;
+    const match = url.match(regExp);
+    
+    if (match && match[2].length === 11) {
+      const videoId = match[2];
+      return `https://www.youtube-nocookie.com/embed/${videoId}?rel=0&modestbranding=1`;
+    }
+    return null;
+  };
+  
+  const embedUrl = getYouTubeEmbedUrl(videoUrl);
+  
   // Función para formatear el precio con separador de miles mientras escriben
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const rawValue = e.target.value.replace(/\D/g, ""); // Solo números
@@ -121,8 +157,10 @@ export default function PropertyFormPage() {
 
         {/* SECCIÓN DINÁMICA (Campos Específicos según el tipo) */}
 
-        <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100 animate-in fade-in slide-in-from-bottom-4">
-          <h2 className="text-xl font-bold text-[#003153] mb-6">Detalles de la propiedad</h2>
+        <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-bold text-[#003153] mb-6 flex items-center gap-2">
+            <span className="w-2 h-6 bg-emerald-500 rounded-full inline-block"></span>
+            Detalles de la propiedad</h2>
           {!propertyType && (
             <p className="text-slate-500">Por favor, seleccione un tipo de propiedad para poder completar los detalles.</p>
           )}
@@ -131,7 +169,7 @@ export default function PropertyFormPage() {
               {propertyType === 'residential' && <ResidentialFields register={register} watch={watch} control={control} />}
               {propertyType === 'commercial' && <CommercialFields register={register} watch={watch} control={control} />}
               {propertyType === 'industrial' && <IndustrialFields register={register} watch={watch} control={control} />}
-              {propertyType === 'land' && <LandFields register={register}/>}
+              {propertyType === 'land' && <LandFields register={register} />}
             </div>
           )}
         </section>
@@ -157,18 +195,18 @@ export default function PropertyFormPage() {
             )}
 
             {/* Si es un Lote o Industrial, quizás quieras superficie de frente/fondo */}
-            {/* {(propertyType === 'land' || propertyType === 'industrial') && (
+            {(propertyType === 'land' || propertyType === 'industrial') && (
               <div className="grid grid-cols-2 gap-2 animate-in zoom-in">
                 <div>
                   <label className="admin-label">Frente (m)</label>
-                  <input type="number" {...register('frontMeters')} className="admin-input" />
+                  <input type="number" {...register('land.frontMeters')} className="admin-input" />
                 </div>
                 <div>
                   <label className="admin-label">Fondo (m)</label>
-                  <input type="number" {...register('backMeters')} className="admin-input" />
+                  <input type="number" {...register('land.backMeters')} className="admin-input" />
                 </div>
               </div>
-            )} */}
+            )}
           </div>
         </section>
 
@@ -195,7 +233,47 @@ export default function PropertyFormPage() {
 
         </section>
 
+        <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-bold text-[#003153] mb-6 flex items-center gap-2">
+            <span className="w-2 h-6 bg-yellow-500 rounded-full inline-block"></span>
+            Imágenes de la Propiedad
+          </h2>
+          <ImageUploader setValue={setValue} watch={watch} />
+        </section>
 
+        <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-bold text-[#003153] mb-6 flex items-center gap-2">
+            <span className="w-2 h-6 bg--500 rounded-full inline-block"></span>
+            Video de la propiedad
+          </h2>
+
+          <div className="space-y-4">
+            <label className="admin-label">Enlace de YouTube</label>
+            <input
+              {...register('videoUrl')}
+              className="admin-input"
+              placeholder="Ej: https://www.youtube.com/watch?v=..."
+            />
+
+            {/* Previsualización dinámica */}
+            {embedUrl && (
+              <div className="aspect-video w-full max-w-xl rounded-[25px] overflow-hidden bg-slate-100 shadow-inner border border-slate-100 animate-in zoom-in-50 duration-300">
+                <iframe
+                  className="w-full h-full"
+                  src={embedUrl}
+                  title="Previsualización del video de la propiedad"
+                  frameBorder="0"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            )}
+
+            {videoUrl && !embedUrl && (
+              <p className="text-xs text-red-500 font-medium">El enlace no parece ser un video válido de YouTube.</p>
+            )}
+          </div>
+        </section>
         <div className="flex justify-end pt-6">
           <button type="submit" className="bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
             Guardar Propiedad
