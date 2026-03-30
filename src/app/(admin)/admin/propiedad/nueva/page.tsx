@@ -1,11 +1,14 @@
 'use client';
 import dynamic from 'next/dynamic';
 import { useForm } from 'react-hook-form';
+import { useEffect } from 'react';
 import ResidentialFields from '../components/ResidentialFields';
 import CommercialFields from '../components/CommercialFields';
 import IndustrialFields from '../components/IndustrialFields';
 import LandFields from '../components/LandFields';
 import ImageUploader from '@/app/inmobiliaria/propiedad/[slug]/components/ImageUploader';
+import AdminPrivateFields from '../components/AdminPrivateFields';
+import SourceFields from '../components/SourceFields';
 
 const LocationPicker = dynamic(
   () => import('../components/LocationPicker'),
@@ -20,7 +23,7 @@ const SUBTYPES = {
 };
 
 export default function PropertyFormPage() {
-  const { register, watch, handleSubmit, setValue, control } = useForm({
+  const { register, watch, handleSubmit, setValue, control, reset } = useForm({
     defaultValues: {
       category: '',
       name: '',
@@ -56,6 +59,25 @@ export default function PropertyFormPage() {
     }
   });
 
+useEffect(() => {
+  // Aquí es donde harías: const propiedad = await getPropertyById(id)
+  const modoEdicion = true; // Cambia a true para probar
+
+  if (modoEdicion) {
+    const propiedadExistente = {
+      name: "Galpón en el Pato",
+      propertySource: "colega", // El toggle debería cambiar automáticamente
+      colleagueId: "10",        // Debería seleccionar a Gastón
+      privateNotes: "Acuerdo de prueba",
+      type: "industrial",
+      industrial: { height: '15', offices: '2',hasThreePhasePower: true },
+
+    };
+
+    // reset() llena todo el formulario de una sola vez
+    reset(propiedadExistente);
+  }
+}, [reset]);
 
   const propertyType = watch('type');
   const propertySubtype = watch('subtype');
@@ -234,6 +256,31 @@ export default function PropertyFormPage() {
         </section>
 
         <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
+          <h2 className="text-xl font-bold text-[#003153] mb-6">Descripción y Documentos</h2>
+          <div className="space-y-6">
+            <div>
+              <label className="admin-label">Descripción Pública</label>
+              <textarea 
+                {...register('description')} 
+                className="admin-input h-48 resize-none" 
+                placeholder="Escribe aquí todo lo que el cliente debe saber..."
+              ></textarea>
+            </div>
+            
+            <div>
+              <label className="admin-label">Subir PDF de la propiedad (Opcional)</label>
+              <div className="border-2 border-dashed border-slate-200 rounded-2xl p-8 text-center hover:bg-slate-50 transition-all">
+                <input type="file" {...register('pdfUrl')} accept=".pdf" className="hidden" id="pdf-upload" />
+                <label htmlFor="pdf-upload" className="cursor-pointer text-blue-600 font-bold">
+                  Click aquí para subir el PDF
+                </label>
+                <p className="text-xs text-slate-400 mt-2">PDF publicitario de la propiedad.</p>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
           <h2 className="text-xl font-bold text-[#003153] mb-6 flex items-center gap-2">
             <span className="w-2 h-6 bg-yellow-500 rounded-full inline-block"></span>
             Imágenes de la Propiedad
@@ -274,6 +321,17 @@ export default function PropertyFormPage() {
             )}
           </div>
         </section>
+
+<SourceFields 
+  register={register} 
+  watch={watch} 
+  setValue={setValue} 
+  control={control}
+  propietarios={MOCK_DATA.propietarios}
+  colegas={MOCK_DATA.colegas}
+  agentes={MOCK_DATA.agentes}
+/>        <AdminPrivateFields register={register} watch={watch} />
+
         <div className="flex justify-end pt-6">
           <button type="submit" className="bg-blue-600 text-white px-10 py-4 rounded-2xl font-bold hover:bg-blue-700 transition-all shadow-lg shadow-blue-200">
             Guardar Propiedad
@@ -283,3 +341,17 @@ export default function PropertyFormPage() {
     </div>
   );
 }
+
+const MOCK_DATA = {
+  propietarios: [
+    { id: "1", fullName: "Adriana Dueña", phoneNumber: "1169279805" },
+    { id: "2", fullName: "Juan Perez", phoneNumber: "1122334455" }
+  ],
+  colegas: [
+    { id: "10", agencyName: "Bridge Propiedades", fullName: "Gastón", phoneNumber: "1199887766" },
+    { id: "11", agencyName: "REMAX", fullName: "Pablo Fiorita", phoneNumber: "1144556677" }
+  ],
+  agentes: [
+    { id: "100", fullName: "Agente MS 1", phoneNumber: "1100001111" }
+  ]
+};
