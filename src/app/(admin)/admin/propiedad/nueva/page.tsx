@@ -15,6 +15,7 @@ const LocationPicker = dynamic(
   { ssr: false, loading: () => <div className="h-[400px] bg-slate-100 animate-pulse rounded-[30px] flex items-center justify-center">Cargando Mapa...</div> }
 );
 
+
 const SUBTYPES = {
   residential: ['Casa', 'Departamento', 'PH', 'Duplex', 'Quinta'],
   industrial: ['Nave', 'Galpón', 'Lote Industrial'],
@@ -23,7 +24,45 @@ const SUBTYPES = {
 };
 
 export default function PropertyFormPage() {
-  const { register, watch, handleSubmit, setValue, control, reset } = useForm({
+
+type PropertyType = "" | "residential" | "industrial" | "commercial" | "land";
+// (or use your form model type from useForm<>)
+
+interface PropertyFormValues {
+  category:string;
+  name: string;
+  address: string;
+  locality: string;
+  latitude: string;
+  longitude: string;
+  totalSurface: string;
+  coveredSurface?: string;
+  description: string;
+  type: PropertyType;
+  subtype: string;
+  propertySource: "ms_propia" | "colega";
+  colleagueId?: string;
+  privateNotes?: string;
+  residential?: { isNew?: boolean, age?: string, rooms?: string, bathrooms?: string, hasPool?: boolean, hasGrill?: boolean, hasGarden?: boolean, hasAC?: boolean, hasGarage?: boolean, hasLaundry?: boolean, hasDressingRoom?: boolean, hasGym?: boolean, isFurnished?: boolean, hasNaturalGas?: boolean },
+  commercial?: { isNew?: false, age?: string, rooms?: string, bathrooms?: string, hasAC?: boolean, hasParking?: boolean, hasRollingShutter?: boolean, hasKitchen?: boolean, hasFireProtection?: boolean },
+  industrial?: { isNew?: false, age?: string, height?: string, offices?: string, bathrooms?: string, hasParking?: boolean, hasFullSoul?: boolean, hasThreePhasePower?: boolean, hasIndustrialGas?: boolean, hasFireNetwork?: boolean, isInsidePark?: boolean, zonification?: string },
+  land?: { frontMeters?: string, backMeters?: string, hasWaterLine?: boolean, hasGasLine?: boolean, hasSewerLine?: boolean, hasElectricity?: boolean, isFenced?: boolean, isGatedNeighborhood?: boolean },
+  internalDocsUrls?: string[];
+  videoUrl?: string;
+  pdfUrl?: string;
+  isPublished: 'true' | 'false';
+  colleague?: { fullName: string, agencyName?: string, phoneNumber: string, email?: string };
+  ownerId?: string;
+  owner?: { fullName: string, phoneNumber: string, email?: string };
+  agentId?: string;
+  agent?: { fullName: string, phoneNumber: string, email?: string };  
+  price: string;
+  currency: string;
+  images: string[];
+  slug: string;
+}
+  
+  const { register, watch, handleSubmit, setValue, control, reset } = useForm<PropertyFormValues>({
     defaultValues: {
       category: '',
       name: '',
@@ -38,10 +77,10 @@ export default function PropertyFormPage() {
       subtype: '',
       currency: 'USD',
       price: '',
-      residential: { isNew: '', age: '', rooms: '', bathrooms: '', hasPool: false, hasGrill: false, hasGarden: false, hasAC: false, hasGarage: false, hasLaundry: false, hasDressingRoom: false, hasGym: false, isFurnished: false, hasNaturalGas: false },
-      commercial: { isNew: '', age: '', rooms: '', bathrooms: '', hasAC: false, hasParking: false, hasRollingShutter: false, hasKitchen: false, hasFireProtection: false },
-      industrial: { isNew: '', age: '', height: '', offices: '', bathrooms: '', hasParking: false, hasFullSoul: false, hasThreePhasePower: false, hasIndustrialGas: false, hasFireNetwork: false, isInsidePark: false, zonification: '' },
-      land: { frontMeters: '', backMeters: '', hasWaterLine: false, hasGasLine: false, hasSewerLine: false, hasElectricity: false, isFenced: false, isGatedNeighborhood: false },
+      residential: { isNew: false, age: '', rooms: '', bathrooms: '', hasPool: false, hasGrill: false, hasGarden: false, hasAC: false, hasGarage: false, hasLaundry: false, hasDressingRoom: false, hasGym: false, isFurnished: false, hasNaturalGas: false },
+      commercial: { isNew: false, age: '', rooms: '', bathrooms: '', hasAC: false, hasParking: false, hasRollingShutter: false, hasKitchen: false, hasFireProtection: false },
+      industrial: { isNew: false, age: '', height: '', offices: '', bathrooms: '0', hasParking: false, hasFullSoul: false, hasThreePhasePower: false, hasIndustrialGas: false, hasFireNetwork: false, isInsidePark: false, zonification: '' },
+      land: { frontMeters: '', backMeters: '', hasWaterLine:false, hasGasLine: false, hasSewerLine: false, hasElectricity: false, isFenced: false, isGatedNeighborhood: false },
       images: [],
       slug: '',
       videoUrl: '',
@@ -60,23 +99,36 @@ export default function PropertyFormPage() {
   });
 
 useEffect(() => {
-  // Aquí es donde harías: const propiedad = await getPropertyById(id)
-  const modoEdicion = true; // Cambia a true para probar
+  const modoEdicion = true;
+  if (!modoEdicion) return;
 
-  if (modoEdicion) {
-    const propiedadExistente = {
-      name: "Galpón en el Pato",
-      propertySource: "colega", // El toggle debería cambiar automáticamente
-      colleagueId: "10",        // Debería seleccionar a Gastón
-      privateNotes: "Acuerdo de prueba",
-      type: "industrial",
-      industrial: { height: '15', offices: '2',hasThreePhasePower: true },
+  const propiedadExistente: PropertyFormValues = {
+    category: "alquiler",
+    name: "Galpón en el Pato",
+    address: "calle x",
+    locality: "ciudad",
+    latitude: "0",
+    longitude: "0",
+    totalSurface: "100",
+    coveredSurface: "80",
+    description: "Acuerdo de prueba",
+    type: "industrial", // exactly union value
+    propertySource: "colega",
+    colleagueId: "10",
+    privateNotes: "Acuerdo de prueba",
+    industrial: { height: "15", offices: "2", hasThreePhasePower: true },
+    internalDocsUrls: [],
+    videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
+    isPublished: 'true',
+    colleague: { fullName: "Pablo", agencyName: "REMAX", phoneNumber: "112553589" },
+    price: "100000",
+    currency: "USD",
+    images: ["https://via.placeholder.com/600x400", "https://via.placeholder.com/600x400"],
+    slug: "string",
+    subtype: ''
+  };
 
-    };
-
-    // reset() llena todo el formulario de una sola vez
-    reset(propiedadExistente);
-  }
+  reset(propiedadExistente);
 }, [reset]);
 
   const propertyType = watch('type');
@@ -98,7 +150,7 @@ useEffect(() => {
     return null;
   };
   
-  const embedUrl = getYouTubeEmbedUrl(videoUrl);
+  const embedUrl = getYouTubeEmbedUrl(videoUrl || '');
   
   // Función para formatear el precio con separador de miles mientras escriben
   const handlePriceChange = (e: React.ChangeEvent<HTMLInputElement>) => {
