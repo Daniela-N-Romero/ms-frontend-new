@@ -14,3 +14,27 @@ export async function getPropertyBySlug(slug: string) {
     return null;
   }
 }
+
+export async function createProperty(formData: FormData) {
+  const token = localStorage.getItem('token'); 
+
+    if (!token) {
+      throw new Error("No hay una sesión activa. Por favor, inicia sesión.");
+    }
+
+  try {
+    const res = await fetch(`${API_URL}/api/properties`, {
+      method: 'POST',
+      headers: {
+        'Authorization': `Bearer ${token}` // El backend pide esto en authenticate 
+      },
+      body: formData // Enviamos FormData porque hay archivos
+    });
+
+    if (!res.ok) throw new Error('Error en el servidor');
+    return await res.json();
+  } catch (error) {
+    console.error("Error al crear propiedad:", error);
+    throw error;
+  }
+}
