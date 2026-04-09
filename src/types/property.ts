@@ -12,7 +12,7 @@ export interface PropertyFormValues {
   category:string;
   name: string;
   address: string;
-  locality: string;
+  locationId: string;
   latitude: string;
   longitude: string;
   totalSurface: string;

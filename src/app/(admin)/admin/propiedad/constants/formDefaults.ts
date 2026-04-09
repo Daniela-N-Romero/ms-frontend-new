@@ -4,7 +4,7 @@ export const INITIAL_PROPERTY_VALUES: PropertyFormValues = {
      category: '',
       name: '',
       address: '',
-      locality: '',
+      locationId: '',
       latitude: '',
       longitude: '',
       totalSurface: '',

@@ -7,7 +7,6 @@ import { useEffect } from 'react';
 import { PropertyFormValues, PROPERTY_SUBTYPES } from '@/types/property';
 import { INITIAL_PROPERTY_VALUES } from '../constants/formDefaults';
 import { MOCK_PROPERTY_FOR_EDIT, MOCK_ADMIN_DATA } from './mockdata'; 
-import { getYouTubeEmbedUrl, cleanPriceForBackend } from '@/utils/formHelpers';
 import { createProperty } from '@/services/propertyService';
 
 // Componentes Presentacionales
