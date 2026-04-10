@@ -24,3 +24,5 @@ export const formatPriceInput = (rawValue: string): string => {
 export const cleanPriceForBackend = (formattedValue: string): string => {
   return formattedValue.replace(/\./g, '');
 };
+
+

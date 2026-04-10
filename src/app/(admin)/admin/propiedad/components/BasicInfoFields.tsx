@@ -1,15 +1,16 @@
-import { UseFormRegister, UseFormSetValue } from "react-hook-form";
-import { PropertyFormValues, PropertyType } from "@/types/property";
 import { formatPriceInput } from "@/utils/formHelpers";
+import { ChevronDown } from "lucide-react";
 
 interface Props {
   register: any;
   setValue: any;
   watch: any;
   subtypes: Record<string, string[]>;
+  isOpen: boolean; 
+  onToggle: () => void;
 }
 
-export default function BasicInfoFields({ register, setValue, watch, subtypes }: Props) {
+export default function BasicInfoFields({ register, setValue, watch, subtypes, isOpen, onToggle }: Props) {
   const propertyType = watch('type');
   const priceValue = watch('price');
 
@@ -19,11 +20,18 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes }:
 
   return (
     <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
-      <h2 className="text-xl font-bold text-[#003153] mb-6 flex items-center gap-2">
-        <span className="w-2 h-6 bg-blue-500 rounded-full inline-block"></span>
-        Información Básica
-      </h2>
+      <button
+          type="button"
+          onClick={onToggle}
+          className="w-full flex items-center justify-between group focus:outline-none"
+        >
+          <h2 className={`text-xl font-bold text-[#003153] mb-1 flex items-center gap-2 ${isOpen ? 'mb-6' : ''}`}><span className="w-2 h-6 bg-blue-500 rounded-full inline-block"></span>Información Básica</h2>
+          <span className={`text-[#003153] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            <ChevronDown size={20} />
+          </span>
+      </button>
 
+      {isOpen && (
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <label className="admin-label">Título de la Propiedad</label>
@@ -65,6 +73,10 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes }:
           </select>
         </div>
       </div>
+      )}
+
     </section>
+    
   );
+
 }
