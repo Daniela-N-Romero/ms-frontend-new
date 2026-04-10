@@ -10,9 +10,9 @@ export default function SurfaceFields({ register, watch, propertyType, isOpen, o
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between group focus:outline-none"
+        className={`w-full flex items-center justify-between group focus:outline-none ${isOpen ? 'mb-8' : ''}`}
       >
-        <h2 className={`text-xl font-bold text-[#003153] mb-1 flex items-center gap-2 ${isOpen ? 'mb-6' : ''}`}>
+        <h2 className="text-xl font-bold text-[#003153] flex items-center gap-2">
           <span className="w-2 h-6 bg-amber-500 rounded-full inline-block"></span>
           Superficie
         </h2>
@@ -28,14 +28,14 @@ export default function SurfaceFields({ register, watch, propertyType, isOpen, o
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div>
             <label className="admin-label">Superficie Total (m²)</label>
-            <input type="number" {...register('totalSurface')} className="admin-input" placeholder="Ej: 500" />
+            <input required type="number" {...register('totalSurface')} className="admin-input" placeholder="Ej: 500" />
           </div>
 
           {/* Lógica: Si no es tierra, mostramos cubierta */}
           {propertyType !== 'land' && propertySubtype !== 'lote industrial' && (
             <div className="animate-in zoom-in">
               <label className="admin-label">Superficie Cubierta (m²)</label>
-              <input type="number" {...register('coveredSurface')} className="admin-input" placeholder="Ej: 120" />
+              <input required type="number" {...register('coveredSurface')} className="admin-input" placeholder="Ej: 120" />
             </div>
           )}
 

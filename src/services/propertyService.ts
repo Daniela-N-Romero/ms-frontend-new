@@ -1,40 +1,33 @@
-const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001';
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3000/api';
 
-export async function getPropertyBySlug(slug: string) {
-  try {
-    const res = await fetch(`${API_URL}/api/properties/slug/${slug}`, {
-      cache: 'no-store' // Para desarrollo, luego podés usar revalidate
-      // next: { revalidate: 3600 } // Cache de 1 hora para SEO
-    });
-    
-    if (!res.ok) return null;
-    return res.json();
-  } catch (error) {
-    console.error("Error fetching property by slug:", error);
-    return null;
-  }
-}
+export const propertyService = {
+  // Obtener una propiedad para editar
+  getById: async (id: string) => {
+    const res = await fetch(`${API_URL}/properties/${id}`);
+    if (!res.ok) throw new Error('Error al obtener la propiedad');
+    const data = await res.json();
+    return {
+      ...data,
+      [data.type]: data.specificCharacteristics 
+    };
+  },
 
-export async function createProperty(formData: FormData) {
-  const token = localStorage.getItem('token'); 
-
-    if (!token) {
-      throw new Error("No hay una sesión activa. Por favor, inicia sesión.");
-    }
-
-  try {
-    const res = await fetch(`${API_URL}/api/properties`, {
+  // Crear nueva
+  create: async (formData: FormData) => {
+    const res = await fetch(`${API_URL}/properties`, {
       method: 'POST',
-      headers: {
-        'Authorization': `Bearer ${token}` // El backend pide esto en authenticate 
-      },
-      body: formData // Enviamos FormData porque hay archivos
+      body: formData,
+      // Nota: No envíes Content-Type manual, el navegador lo hace solo con FormData
     });
+    return res.json();
+  },
 
-    if (!res.ok) throw new Error('Error en el servidor');
-    return await res.json();
-  } catch (error) {
-    console.error("Error al crear propiedad:", error);
-    throw error;
+  // Actualizar existente
+  update: async (id: string, formData: FormData) => {
+    const res = await fetch(`${API_URL}/properties/${id}`, {
+      method: 'PUT',
+      body: formData,
+    });
+    return res.json();
   }
-}
+};

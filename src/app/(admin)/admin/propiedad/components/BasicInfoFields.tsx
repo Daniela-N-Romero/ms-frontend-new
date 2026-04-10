@@ -21,11 +21,11 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes, i
   return (
     <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
       <button
-          type="button"
-          onClick={onToggle}
-          className="w-full flex items-center justify-between group focus:outline-none"
-        >
-          <h2 className={`text-xl font-bold text-[#003153] mb-1 flex items-center gap-2 ${isOpen ? 'mb-6' : ''}`}>
+        type="button"
+        onClick={onToggle}
+        className={`w-full flex items-center justify-between group focus:outline-none ${isOpen ? 'mb-8' : ''}`}
+      >
+        <h2 className="text-xl font-bold text-[#003153] flex items-center gap-2">
             <span className="w-2 h-6 bg-blue-500 rounded-full inline-block"></span>
             Información Básica
           </h2>
@@ -39,7 +39,7 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes, i
       <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
         <div className="md:col-span-2">
           <label className="admin-label">Título de la Propiedad</label>
-          <input {...register('name')} className="admin-input" placeholder="Ej: Galpón Impecable..." />
+          <input required {...register('name')} className="admin-input" placeholder="Ej: Galpón Impecable..." />
         </div>
 
         <div>
@@ -47,8 +47,8 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes, i
           <div className="relative">
             <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 font-bold">$</span>
             <input
+              required 
               type="text"
-              value={priceValue}
               onChange={handlePriceChange}
               className="admin-input pl-10"
               placeholder="0.000"
@@ -58,7 +58,7 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes, i
 
         <div>
           <label className="admin-label">Tipo de Propiedad</label>
-          <select {...register('type')} className="admin-input">
+          <select {...register('propertyType')} className="admin-input" required >
             <option value="">Seleccionar tipo</option>
             <option value="residential">Residencial</option>
             <option value="industrial">Industrial</option>
@@ -69,7 +69,7 @@ export default function BasicInfoFields({ register, setValue, watch, subtypes, i
 
         <div>
           <label className="admin-label">Subtipo</label>
-          <select {...register('subtype')} className="admin-input" disabled={!propertyType}>
+          <select {...register('subtype')} className="admin-input" disabled={!propertyType} required>
             <option value="">{propertyType ? "Seleccionar" : "Primero elija tipo"}</option>
             {propertyType && subtypes[propertyType]?.map(sub => (
               <option key={sub} value={sub.toLowerCase()}>{sub}</option>

@@ -88,16 +88,51 @@ export default function LocationSection({ register, setValue, watch, control, er
 
   }
 
+  const handleMapLocationChange = (mapData: { state?: string, county?: string, suburb?: string }) => {
+  // 1. Normalizamos los nombres para comparar (sacar acentos, pasar a mayúsculas)
+  const normalize = (str: string) => 
+    str.normalize("NFD").replace(/[\u0300-\u036f]/g, "").toUpperCase();
+
+  const mapState = mapData.state ? normalize(mapData.state) : "";
+  const mapCounty = mapData.county ? normalize(mapData.county) : "";
+  const mapSuburb = mapData.suburb ? normalize(mapData.suburb) : "";
+
+  // 2. Buscamos la Provincia en tu jerarquía
+  const provinceMatch = hierarchy.find(p => normalize(p.name).includes(mapState) || mapState.includes(normalize(p.name)));
+  
+  if (provinceMatch) {
+    setSelectedProvince(provinceMatch.name);
+    
+    // 3. Buscamos el Partido/Distrito dentro de esa provincia
+    const districtMatch = provinceMatch.districts.find(d => 
+      normalize(d.name).includes(mapCounty) || mapCounty.includes(normalize(d.name))
+    );
+
+    if (districtMatch) {
+      setSelectedDistrict(districtMatch.name);
+      
+      // 4. Buscamos la Localidad específica
+      const locationMatch = districtMatch.locations.find(l => 
+        normalize(l.name).includes(mapSuburb) || mapSuburb.includes(normalize(l.name))
+      );
+
+      if (locationMatch) {
+        setValue('locationId', locationMatch.id, { shouldValidate: true });
+      }
+    }
+  }
+};
+
   return (
     <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
 
       <button
         type="button"
         onClick={onToggle}
-        className="w-full flex items-center justify-between group focus:outline-none"
+        className={`w-full flex items-center justify-between group focus:outline-none ${isOpen ? 'mb-8' : ''}`}
       >
-        <h2 className={`text-xl font-bold text-[#003153] mb-1 flex items-center gap-2 ${isOpen ? 'mb-6' : ''}`}>
-          <span className="w-2 h-6 bg-emerald-500 rounded-full inline-block"></span>
+        <h2 className="text-xl font-bold text-[#003153] flex items-center gap-2">
+          <span className="w-2 h-6 bg-blue-500 rounded-full inline-block"></span>
           Ubicación y Zona
         </h2>
 
@@ -123,6 +158,7 @@ export default function LocationSection({ register, setValue, watch, control, er
                   setValue('locationId', null);
                   setShowMap(false);
                 }}
+                required 
               >
                 <option value="">Seleccione...</option>
                 {provinces.map(p => <option key={p.id} value={p.name}>{p.name}</option>)}
@@ -140,6 +176,7 @@ export default function LocationSection({ register, setValue, watch, control, er
                   setValue('locationId', null);
                   setShowMap(false);
                 }}
+                required 
               >
                 <option value="">Seleccione...</option>
                 {districts.map(d => <option key={d.id} value={d.name}>{d.name}</option>)}
@@ -154,6 +191,7 @@ export default function LocationSection({ register, setValue, watch, control, er
                   className="admin-input"
                   disabled={!selectedDistrict}
                   onChange={getLocationData}
+                  required 
                 >
                   <option value="">Seleccione...</option>
                   {locations.map(l => <option key={l.id} value={l.id}>{l.name}</option>)}
@@ -169,7 +207,7 @@ export default function LocationSection({ register, setValue, watch, control, er
                 <label className="admin-label">Dirección (Calle y Altura)</label>
                 <input {...register('address')} className="admin-input" readOnly placeholder="La dirección aparecerá al marcar el mapa" />
               </div>
-              
+
               <div
                 key={mapKey} className={`rounded-[30px] transition-all duration-300 ${errors?.latitude || errors?.longitude ? 'ring-4 ring-red-500 shadow-[0_0_20px_rgba(239,68,68,0.3)]' : 'border-4 border-white'}`}
               >

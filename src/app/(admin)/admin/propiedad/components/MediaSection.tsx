@@ -1,22 +1,37 @@
 import ImageUploader from '@/app/inmobiliaria/propiedad/[slug]/components/ImageUploader';
 import { getYouTubeEmbedUrl } from '@/utils/formHelpers';
+import { ChevronDown } from 'lucide-react';
 
 interface Props {
   register: any;
   setValue: any;
   watch: any;
+  isOpen: boolean;
+  onToggle: () => void;
 }
 
-export default function MediaSection({ register, setValue, watch }: Props) {
+export default function MediaSection({ register, setValue, watch, isOpen, onToggle }: Props) {
   const videoUrl = watch('videoUrl');
   const embedUrl = getYouTubeEmbedUrl(videoUrl || '');
 
   return (
     <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
-      <h2 className="text-xl font-bold text-[#003153] mb-8 flex items-center gap-2">
-        <span className="w-2 h-6 bg-yellow-500 rounded-full inline-block"></span>
-        Multimedia de la Propiedad
-      </h2>
+       <button
+        type="button"
+        onClick={onToggle}
+        className={`w-full flex items-center justify-between group focus:outline-none ${isOpen ? 'mb-8' : ''}`}
+      >
+        <h2 className="text-xl font-bold text-[#003153] flex items-center gap-2">
+            <span className="w-2 h-6 bg-emerald-500 rounded-full inline-block"></span>
+           Multimedia
+          </h2>
+
+          <span className={`text-[#003153] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
+            <ChevronDown size={25} />
+          </span>
+      </button>
+
+      {isOpen && (
 
       <div className="space-y-10">
         {/* Subida de Fotos */}
@@ -52,6 +67,7 @@ export default function MediaSection({ register, setValue, watch }: Props) {
           )}
         </div>
       </div>
+      )}
     </section>
   );
 }

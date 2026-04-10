@@ -30,6 +30,7 @@ export default function LocationPicker({ setValue, control}: any) {
     setValue('latitude', newLat.toString(), { shouldDirty: true, shouldValidate: true });
     setValue('longitude', newLng.toString(), { shouldDirty: true, shouldValidate: true });
   };
+  
 
   // B. FUNCIÓN: Busca la dirección usando Nominatim (con espera)
   const fetchAddress = async (newLat: number, newLng: number) => {
@@ -90,6 +91,7 @@ export default function LocationPicker({ setValue, control}: any) {
     </div>
   );
 }
+
 
 // Sub-Componente para mover la vista del mapa cuando cambian lat/lng
 function RecenterMap({ lat, lng }: { lat: number, lng: number }) {

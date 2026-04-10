@@ -12,9 +12,12 @@ export default function AdminPrivateFields({ register, watch, propertyType, cont
         <button
             type="button"
             onClick={onToggle}
-            className="w-full flex items-center justify-between group focus:outline-none"
+            className={`w-full flex items-center justify-between group focus:outline-none ${isOpen ? 'mb-8' : ''}`}
         >
-            <h2 className={`text-xl font-bold text-[#003153] mb-1 flex items-center gap-2 ${isOpen ? 'mb-6' : ''}`}><span className="w-2 h-6  bg-emerald-500 rounded-full inline-block"></span>Detalles de la propiedad</h2>
+            <h2 className="text-xl font-bold text-[#003153] flex items-center gap-2">
+                <span className="w-2 h-6  bg-emerald-500 rounded-full inline-block"></span>Detalles de la propiedad
+            </h2>
+            
             <span className={`text-[#003153] transition-transform duration-300 ${isOpen ? 'rotate-180' : ''}`}>
                 <ChevronDown size={25} />
             </span>

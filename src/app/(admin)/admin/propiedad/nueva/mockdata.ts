@@ -4,7 +4,7 @@ export const MOCK_PROPERTY_FOR_EDIT: PropertyFormValues = {
   category: "alquiler",
   name: "Galpón en el Pato",
   address: "calle x",
-  locality: "ciudad",
+  locationId: "",
   latitude: "0",
   longitude: "0",
   totalSurface: "100",
@@ -17,7 +17,7 @@ export const MOCK_PROPERTY_FOR_EDIT: PropertyFormValues = {
   industrial: { height: "15", offices: "2", hasThreePhasePower: true },
   internalDocsUrls: [],
   videoUrl: "https://www.youtube.com/watch?v=dQw4w9WgXcQ",
-  isPublished: true,
+  isPublished: false,
   colleague: {
     fullName: "Pablo",
     agencyName: "REMAX",
