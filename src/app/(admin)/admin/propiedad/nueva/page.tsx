@@ -29,12 +29,13 @@ export default function PropertyFormPage() {
 
   const [openSections, setOpenSections] = useState({
     basiInfo: true,   // La primera abierta por defecto
-    specifics: false,
+    specificFields: false,
     surfaceFields: false,
     description: false,
     multimedia: false,
     sources: false,
-    privateFields: false
+    privateFields: false,
+    locationFields: false
   });
 
   const toggleSection = (section: keyof typeof openSections) => {
@@ -103,11 +104,11 @@ export default function PropertyFormPage() {
           <BasicInfoFields register={register} setValue={setValue} watch={watch} subtypes={PROPERTY_SUBTYPES} isOpen={openSections.basiInfo} onToggle={() => toggleSection('basiInfo')} />
 
           {/* SECCIÓN DINÁMICA (Campos Específicos según el tipo) */}
-          <PropertyDetails register={register} watch={watch} control={control} propertyType={propertyType} />
+          <PropertyDetails register={register} watch={watch} control={control} propertyType={propertyType}  isOpen={openSections.specificFields} onToggle={() => toggleSection('specificFields')}/>
           
-          <SurfaceFields register={register} watch={watch} propertyType={propertyType} />
+          <SurfaceFields register={register} watch={watch} propertyType={propertyType} isOpen={openSections.surfaceFields} onToggle={() => toggleSection('surfaceFields')}/>
 
-          <LocationSection register={register} setValue={setValue} watch={watch} control={control} errors={errors} />
+          <LocationSection register={register} setValue={setValue} watch={watch} control={control} isOpen={openSections.locationFields} onToggle={() => toggleSection('locationFields')} errors={errors} />
 
           <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
             <h2 className="text-xl font-bold text-[#003153] mb-6">Descripción y Documentos</h2>
