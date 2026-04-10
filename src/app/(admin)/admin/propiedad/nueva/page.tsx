@@ -30,7 +30,7 @@ const LocationPicker = dynamic(
 
 export default function PropertyFormPage() {
 
-  const { register, watch, handleSubmit, setValue, control, reset } = useForm<PropertyFormValues>({
+  const { register, watch, handleSubmit, setValue, control, reset,  formState: { errors }} = useForm<PropertyFormValues>({
    defaultValues: INITIAL_PROPERTY_VALUES
   });
 
@@ -108,7 +108,7 @@ export default function PropertyFormPage() {
 
         <SurfaceFields register={register} watch={watch} propertyType={propertyType} />
 
-        <LocationSection register={register} setValue={setValue} watch={watch} />  
+        <LocationSection register={register} setValue={setValue} watch={watch} control={control} errors={errors}/>  
 
         <section className="bg-white p-8 rounded-[35px] shadow-sm border border-slate-100">
           <h2 className="text-xl font-bold text-[#003153] mb-6">Descripción y Documentos</h2>
